@@ -21,6 +21,7 @@ public class SquareTexturedSkybox extends TexturedSkybox {
             Conditions.CODEC.optionalFieldOf("conditions", Conditions.NO_CONDITIONS).forGetter(AbstractSkybox::getConditions),
             Decorations.CODEC.optionalFieldOf("decorations", Decorations.DEFAULT).forGetter(AbstractSkybox::getDecorations),
             Blend.CODEC.optionalFieldOf("blend", Blend.DEFAULT).forGetter(TexturedSkybox::getBlend),
+            Codec.BOOL.optionalFieldOf("scaleY", false).forGetter(TexturedSkybox::getScaleY),
             Textures.CODEC.fieldOf("textures").forGetter(s -> s.textures)
     ).apply(instance, SquareTexturedSkybox::new));
     public Textures textures;
@@ -28,8 +29,8 @@ public class SquareTexturedSkybox extends TexturedSkybox {
     public SquareTexturedSkybox() {
     }
 
-    public SquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, Textures textures) {
-        super(properties, conditions, decorations, blend);
+    public SquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, boolean scaleY, Textures textures) {
+        super(properties, conditions, decorations, blend, scaleY);
         this.textures = textures;
     }
 

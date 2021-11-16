@@ -15,16 +15,18 @@ public class SingleSpriteAnimatedSquareTexturedSkybox extends AnimatedSquareText
 			Conditions.CODEC.optionalFieldOf("conditions", Conditions.NO_CONDITIONS).forGetter(AbstractSkybox::getConditions),
 			Decorations.CODEC.optionalFieldOf("decorations", Decorations.DEFAULT).forGetter(AbstractSkybox::getDecorations),
 			Blend.CODEC.optionalFieldOf("blend", Blend.DEFAULT).forGetter(TexturedSkybox::getBlend),
+			Codec.BOOL.optionalFieldOf("scaleY", false).forGetter(TexturedSkybox::getScaleY),
 			Texture.CODEC.listOf().fieldOf("animationTextures").forGetter(SingleSpriteAnimatedSquareTexturedSkybox::getAnimationTextureList),
 			Codec.FLOAT.fieldOf("fps").forGetter(SingleSpriteAnimatedSquareTexturedSkybox::getFps)
 	).apply(instance, SingleSpriteAnimatedSquareTexturedSkybox::new));
 
-	public SingleSpriteAnimatedSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, List<Texture> animationTextures, float fps) {
+	public SingleSpriteAnimatedSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, boolean scaleY, List<Texture> animationTextures, float fps) {
 		super(
 				properties,
 				conditions,
 				decorations,
 				blend,
+				scaleY,
 				animationTextures.stream().map(texture -> new Textures(
 						texture.withUV(1.0F / 3.0F, 1.0F / 2.0F, 2.0F / 3.0F, 1),
 						texture.withUV(2.0F / 3.0F, 0, 1, 1.0F / 2.0F),

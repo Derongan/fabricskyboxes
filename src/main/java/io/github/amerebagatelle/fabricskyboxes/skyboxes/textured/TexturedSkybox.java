@@ -5,7 +5,9 @@ import io.github.amerebagatelle.fabricskyboxes.mixin.skybox.WorldRendererAccess;
 import io.github.amerebagatelle.fabricskyboxes.skyboxes.AbstractSkybox;
 import io.github.amerebagatelle.fabricskyboxes.skyboxes.RotatableSkybox;
 import io.github.amerebagatelle.fabricskyboxes.util.object.*;
+import java.util.Objects;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -17,14 +19,16 @@ import net.minecraft.util.math.Vec3f;
 public abstract class TexturedSkybox extends AbstractSkybox implements RotatableSkybox {
     public Rotation rotation;
     public Blend blend;
+    public boolean scaleY = false;
 
     protected TexturedSkybox() {
     }
 
-    protected TexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend) {
+    protected TexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, boolean scaleY) {
         super(properties, conditions, decorations);
         this.blend = blend;
         this.rotation = properties.getRotation();
+        this.scaleY = scaleY;
     }
 
     /**
@@ -48,16 +52,17 @@ public abstract class TexturedSkybox extends AbstractSkybox implements Rotatable
         ClientWorld world = MinecraftClient.getInstance().world;
         assert world != null;
         float timeRotation = !this.shouldRotate ? 0 : ((float) world.getTimeOfDay() / 24000) * 360;
+        double translate =
+            !this.scaleY ? 0 : 100 - ((Objects.requireNonNull(MinecraftClient.getInstance().player).getY()
+                - world.getBottomY()) / world.getHeight()) * 100;
 
         matrices.push();
         this.applyTimeRotation(matrices, timeRotation);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rotationStatic.getX()));
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotationStatic.getY()));
         matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotationStatic.getZ()));
+        matrices.translate(0, translate, 0);
         this.renderSkybox(worldRendererAccess, matrices, tickDelta);
-        matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(rotationStatic.getZ()));
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotationStatic.getY()));
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(rotationStatic.getX()));
         matrices.pop();
 
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
@@ -92,5 +97,9 @@ public abstract class TexturedSkybox extends AbstractSkybox implements Rotatable
 
     public Rotation getRotation() {
         return this.rotation;
+    }
+
+    public boolean getScaleY() {
+        return scaleY;
     }
 }

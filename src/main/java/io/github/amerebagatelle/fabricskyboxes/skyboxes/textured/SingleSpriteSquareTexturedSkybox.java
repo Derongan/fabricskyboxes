@@ -13,12 +13,13 @@ public class SingleSpriteSquareTexturedSkybox extends SquareTexturedSkybox {
 			Conditions.CODEC.optionalFieldOf("conditions", Conditions.NO_CONDITIONS).forGetter(AbstractSkybox::getConditions),
 			Decorations.CODEC.optionalFieldOf("decorations", Decorations.DEFAULT).forGetter(AbstractSkybox::getDecorations),
 			Blend.CODEC.optionalFieldOf("blend", Blend.DEFAULT).forGetter(TexturedSkybox::getBlend),
+			Codec.BOOL.optionalFieldOf("scaleY", false).forGetter(TexturedSkybox::getScaleY),
 			Texture.CODEC.fieldOf("texture").forGetter(SingleSpriteSquareTexturedSkybox::getTexture)
 	).apply(instance, SingleSpriteSquareTexturedSkybox::new));
 	protected Texture texture;
 
-	public SingleSpriteSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, Texture texture) {
-		super(properties, conditions, decorations, blend, Util.make(() -> new Textures(
+	public SingleSpriteSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, boolean scaleY, Texture texture) {
+		super(properties, conditions, decorations, blend, scaleY, Util.make(() -> new Textures(
 				texture.withUV(1.0F / 3.0F + 0.005F, 1.0F / 2.0F + 0.005F, 2.0F / 3.0F - 0.005F, 1 - 0.005F),
 				texture.withUV(2.0F / 3.0F + 0.005F, 0 + 0.005F, 1 - 0.005F, 1.0F / 2.0F - 0.005F),
 				texture.withUV(2.0F / 3.0F + 0.005F, 1.0F / 2.0F + 0.005F, 1 - 0.005F, 1 - 0.005F),

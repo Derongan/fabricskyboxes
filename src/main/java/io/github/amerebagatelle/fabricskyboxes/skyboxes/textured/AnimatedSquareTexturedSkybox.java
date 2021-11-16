@@ -16,6 +16,7 @@ public class AnimatedSquareTexturedSkybox extends SquareTexturedSkybox {
             Conditions.CODEC.optionalFieldOf("conditions", Conditions.NO_CONDITIONS).forGetter(AbstractSkybox::getConditions),
             Decorations.CODEC.optionalFieldOf("decorations", Decorations.DEFAULT).forGetter(AbstractSkybox::getDecorations),
             Blend.CODEC.optionalFieldOf("blend", Blend.DEFAULT).forGetter(TexturedSkybox::getBlend),
+            Codec.BOOL.optionalFieldOf("scaleY", false).forGetter(TexturedSkybox::getScaleY),
             Textures.CODEC.listOf().fieldOf("animationTextures").forGetter(AnimatedSquareTexturedSkybox::getAnimationTextures),
             Codec.FLOAT.fieldOf("fps").forGetter(AnimatedSquareTexturedSkybox::getFps)
     ).apply(instance, AnimatedSquareTexturedSkybox::new));
@@ -30,8 +31,8 @@ public class AnimatedSquareTexturedSkybox extends SquareTexturedSkybox {
         return SkyboxType.ANIMATED_SQUARE_TEXTURED_SKYBOX;
     }
 
-    public AnimatedSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, List<Textures> animationTextures, float fps) {
-        super(properties, conditions, decorations, blend, null);
+    public AnimatedSquareTexturedSkybox(DefaultProperties properties, Conditions conditions, Decorations decorations, Blend blend, boolean scaleY, List<Textures> animationTextures, float fps) {
+        super(properties, conditions, decorations, blend, scaleY, null);
         this.animationTextures = animationTextures;
         this.fps = fps;
         if (fps > 0 && fps <= 360) {

@@ -375,9 +375,10 @@ Only the `monocolor` skybox type uses these fields
 
 Only the `-textured` skybox types use these fields
 
-|   Name  | Datatype |                       Description                      |      Required      |   Default value  |
-|:-------:|:--------:|:------------------------------------------------------:|:------------------:|:----------------:|
-| `blend` | Blend Object | Specifies how the skybox should blend into the sky | :white_check_mark: |         -        |
+|   Name   | Datatype |                       Description                      |      Required      |   Default value  |
+|:--------:|:--------:|:------------------------------------------------------:|:------------------:|:----------------:|
+| `blend`  | Blend Object | Specifies how the skybox should blend into the sky | :white_check_mark: |         -        |
+| `scaleY` | Boolean      | Specifies that the Y value of the skybox is not fixed and scales based on the players Y value.| :x:     |         False      |
 
 ### Square Textured skybox
 Only the `square-textured` skybox type uses these fields
